@@ -21,11 +21,11 @@ option(GENERATE_SHARED "Build shared library" ON)
 
 option(GENERATE_FRAMEWORK "Build framework library" ON)
 
-option(DynamicBinaryInstrument "Enable Dynamic Binary Instrument" OFF)
+option(DynamicBinaryInstrument "Enable Dynamic Binary Instrument" ON)
 
 option(NearBranch "Enable Near Branch Trampoline" ON)
 
-option(Plugin.SymbolResolver "Find symbol by [DobbySymbolResolver] " OFF)
+option(Plugin.SymbolResolver "Find symbol by [DobbySymbolResolver] " ON)
 
 option(Plugin.HideLibrary "Hide library by [DobbyHideLibrary]" OFF)
 
@@ -37,7 +37,7 @@ option(Plugin.ApplicationEventMonitor "Auto monitor linker, file, etc." OFF)
 # frida is better choice
 # option(Plugin.SensitiveFunction "Auto monitor sensitive function" OFF)
 
-# option(FunctionWrapper "Enable  Function Wrapper, Add PreCall and PostCall for the origin function" OFF)
+# option(FunctionWrapper "Enable  Function Wrapper, Add PreCall and PostCall for the origin function" ON)
 
 # option(CLOSURE_BRIDGE_TEMPLATE "Enable closure bridge assembly template" OFF)
 
@@ -185,13 +185,6 @@ if(SYSTEM.Darwin)
   )
 endif()
 
-if(SYSTEM.iOS)
-  add_definitions(-DCODE_PATCH_WITH_SUBSTRATED)
-  set(dobby.SOURCE_FILE_LIST ${dobby.SOURCE_FILE_LIST}
-    source/UserMode/ExecMemory/substrated/mach_interface_support/substrated_client.c
-  )
-endif ()
-
 if (FunctionWrapper OR DynamicBinaryInstrument)
   set(dobby.SOURCE_FILE_LIST ${dobby.SOURCE_FILE_LIST}
     # closure trampoline bridge
@@ -208,7 +201,6 @@ if (FunctionWrapper OR DynamicBinaryInstrument)
 endif ()
 
 if (FunctionWrapper)
-  message(FATAL_ERROR "[!] FunctionWrapper plugin is not supported")
   set(dobby.SOURCE_FILE_LIST ${dobby.SOURCE_FILE_LIST}
     source/InterceptRouting/InterceptRoutingPlugin/FunctionWrapper/function-wrapper.cc
     source/InterceptRouting/InterceptRoutingPlugin/FunctionWrapper/FunctionWrapperExport.cc
@@ -358,7 +350,7 @@ if (SYSTEM.Android)
   target_link_libraries(dobby log)
 endif ()
 
-if (SYSTEM.Darwin)
+if (SYSTEM.Darwin OR SYSTEM.iOS)
   target_link_libraries(${dobby_name}
     "-framework Foundation")
 endif ()

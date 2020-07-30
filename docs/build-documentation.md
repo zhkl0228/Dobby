@@ -49,7 +49,21 @@ cmake .. \
 make -j4
 ```
 
-#### Manual build for iOS [ARM/ARM64]
+#### Manual build for iOS [ARM]
+
+```
+cd Dobby && mkdir build_for_ios_arm && cd build_for_ios_arm
+
+cmake .. \
+-DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
+-DPLATFORM=OS -DARCHS="armv7" -DCMAKE_SYSTEM_PROCESSOR=armv7 \
+-DENABLE_BITCODE=0 -DENABLE_ARC=0 -DENABLE_VISIBILITY=1 -DDEPLOYMENT_TARGET=7.1 \
+-DDynamicBinaryInstrument=ON -DNearBranch=ON -DPlugin.SymbolResolver=ON -DPlugin.HideLibrary=ON -DPlugin.ObjectiveC=ON -DGENERATE_FRAMEWORK=OFF
+
+make -j4
+```
+
+#### Manual build for iOS [ARM64]
 
 ```
 cd Dobby && mkdir build_for_ios_arm64 && cd build_for_ios_arm64
@@ -57,8 +71,8 @@ cd Dobby && mkdir build_for_ios_arm64 && cd build_for_ios_arm64
 cmake .. \
 -DCMAKE_TOOLCHAIN_FILE=cmake/ios.toolchain.cmake \
 -DPLATFORM=OS64 -DARCHS="arm64" -DCMAKE_SYSTEM_PROCESSOR=arm64 \
--DENABLE_BITCODE=0 -DENABLE_ARC=0 -DENABLE_VISIBILITY=1 -DDEPLOYMENT_TARGET=9.3 \
--DDynamicBinaryInstrument=ON -DNearBranch=ON -DPlugin.SymbolResolver=ON -DPlugin.HideLibrary=ON -DPlugin.ObjectiveC=ON
+-DENABLE_BITCODE=0 -DENABLE_ARC=0 -DENABLE_VISIBILITY=1 -DDEPLOYMENT_TARGET=7.1 \
+-DDynamicBinaryInstrument=ON -DNearBranch=ON -DPlugin.SymbolResolver=ON -DPlugin.HideLibrary=ON -DPlugin.ObjectiveC=ON -DGENERATE_FRAMEWORK=OFF
 
 make -j4
 ```
@@ -76,8 +90,8 @@ cd Dobby && mkdir build_for_android_arm64 && cd build_for_android_arm64
 
 cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_SYSTEM_NAME=Android -DCMAKE_ANDROID_ARCH_ABI="arm64-v8a" -DCMAKE_ANDROID_NDK=$ANDROID_NDK -DCMAKE_SYSTEM_VERSION=21 -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang \
--DDynamicBinaryInstrument=ON -DNearBranch=ON -DPlugin.SymbolResolver=ON
+-DCMAKE_SYSTEM_NAME=Android -DCMAKE_ANDROID_ARCH_ABI="arm64-v8a" -DCMAKE_ANDROID_NDK=$ANDROID_NDK -DCMAKE_SYSTEM_VERSION=23 -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang \
+-DDynamicBinaryInstrument=ON -DPlugin.SymbolResolver=ON
 
 make -j4
 ```
@@ -91,9 +105,10 @@ export ANDROID_NDK=/Users/jmpews/Library/Android/sdk/ndk-bundle
 
 cd Dobby && mkdir build_for_android_arm && cd build_for_android_arm
 
+cmake .. \
 -DCMAKE_BUILD_TYPE=Release \
--DCMAKE_SYSTEM_NAME=Android -DCMAKE_ANDROID_ARCH_ABI="armeabi-v7a" -DCMAKE_ANDROID_NDK=$ANDROID_NDK -DCMAKE_SYSTEM_VERSION=21 -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang 
--DDynamicBinaryInstrument=ON -DNearBranch=ON -DPlugin.SymbolResolver=ON
+-DCMAKE_SYSTEM_NAME=Android -DCMAKE_ANDROID_ARCH_ABI="armeabi-v7a" -DCMAKE_ANDROID_NDK=$ANDROID_NDK -DCMAKE_SYSTEM_VERSION=19 -DCMAKE_ANDROID_NDK_TOOLCHAIN_VERSION=clang  \
+-DDynamicBinaryInstrument=ON -DPlugin.SymbolResolver=ON
 
 make -j4
 ```
